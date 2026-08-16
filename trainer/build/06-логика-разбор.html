@@ -59,7 +59,7 @@ function правильныйОтвет(q){
     q.a.forEach(function(idx){
       var line=el("div","ansline");
       line.appendChild(el("div","k",LET[idx]||String(idx+1)));
-      line.appendChild(el("div","grow",q.o[idx]));
+      line.appendChild(содержимоеВарианта(q,idx,q.o[idx]));
       wrap.appendChild(line);
     });
   } else if(q.ty==="short"){
@@ -88,7 +88,15 @@ function разборВариантов(q){
     var line=el("div","wline");
     line.appendChild(el("div","k",LET[idx]||String(idx+1)));
     var wt=el("div","wt grow");
-    wt.appendChild(el("b",null,text));
+    var файл=q.oimg&&q.oimg[idx];
+    if(файл){
+      var im=document.createElement("img");
+      im.className="optimg"; im.src=файл; im.alt="Вариант "+(LET[idx]||idx+1);
+      im.onerror=function(){ this.remove(); };
+      wt.appendChild(im);
+    } else {
+      wt.appendChild(el("b",null,text));
+    }
     wt.appendChild(document.createTextNode(" — "+t));
     line.appendChild(wt);
     box.appendChild(line);

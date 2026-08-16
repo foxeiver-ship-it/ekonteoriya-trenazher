@@ -58,6 +58,20 @@ function рисоватьВопрос(){
   обновитьКнопку();
 }
 
+/* У части вопросов варианты — это графики, а текст лишь помечает, что он на картинке */
+function содержимоеВарианта(q,idx,text){
+  var box=el("div","grow");
+  var файл=q.oimg&&q.oimg[idx];
+  if(text) box.appendChild(document.createTextNode(text));
+  if(файл){
+    var im=document.createElement("img");
+    im.className="optimg"; im.src=файл; im.alt="Вариант "+(LET[idx]||idx+1);
+    im.onerror=function(){ this.remove(); };
+    box.appendChild(im);
+  }
+  return box;
+}
+
 function рисоватьВарианты(q){
   var box=el("div","opts");
   var готово=!!S.done[q.id];
@@ -66,7 +80,7 @@ function рисоватьВарианты(q){
     b.type="button";
     b.dataset.i=idx;
     b.appendChild(el("div","k",LET[idx]||String(idx+1)));
-    b.appendChild(el("div","grow",text));
+    b.appendChild(содержимоеВарианта(q,idx,text));
     if(выбран(q,idx)) b.dataset.sel="1";
     if(готово){
       b.classList.add("off");
